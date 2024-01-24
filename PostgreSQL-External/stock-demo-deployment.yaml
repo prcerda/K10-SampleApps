@@ -1,0 +1,56 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stock-demo-deploy
+  namespace: stock-demo
+  labels:
+    app: stock-demo
+    purpose: production
+    dataprotection: k10-gold
+    immutable: enabled  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stock-demo
+  template:
+    metadata:
+      labels:
+        app: stock-demo
+    spec:
+      containers:
+        - name: stock-demo
+          image: tdewin/stock-demo
+          ports:
+            - name: stock-demo
+              containerPort: 8080
+              protocol: TCP
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  key: db_name
+                  name: postgresql-secret
+            - name: POSTGRES_SERVER
+              valueFrom:
+                secretKeyRef:
+                  key: host
+                  name: postgresql-secret
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: postgresql-secret
+            - name: POSTGRES_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: port
+                  name: postgresql-secret
+            - name: ADMINKEY
+              value: unlock
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: postgresql-secret
