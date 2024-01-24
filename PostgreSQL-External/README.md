@@ -1,6 +1,6 @@
 ***Status:** Work-in-progress. Please create issues or pull requests if you have ideas for improvement.*
 
-# **Demo app with external PostgreSQL database and Kanister blueprint **
+# **Demo app with external PostgreSQL database and Kanister blueprint**
 Demo app and Kanister blueprint to backup PostgreSQL external database instance (running outside the Kubernetes cluster).
 
 
