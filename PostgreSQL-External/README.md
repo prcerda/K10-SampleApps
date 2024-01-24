@@ -25,6 +25,7 @@ This blueprint has been tested with **PostgreSQL 15.4 for Linux**.
 3. [Deploy demo app](#Deploy-demo-app)
 4. [Blueprint Variables](#Blueprint-Variables)
 5. [Using the Kanister blueprint](#Using-the-Kanister-blueprint)
+6. [Basic tests](#Basic-tests)
 
 ## Create Database in PostgreSQL
 **Create user stock**
@@ -53,6 +54,11 @@ ALTER USER stock PASSWORD 'Veeam123!';
 ```
 
 ## Create and Populate Table
+**Connect to PostgreSQL with user stock**
+```
+sudo -u stock psql
+```
+
 **Create table**
 
 ```
@@ -122,8 +128,43 @@ In order to use this blueprint:
 kubectl create -f postgresql-ext-blueprint-alldbs.yaml -n kasten-io
 ```
 
-4. Annotate the application (deployment) with the correct annotation to instruct K10 to use the Blueprint (postgresql-ext-deploymentDemo )
+4. Annotate the application (deployment) with the correct annotation to instruct K10 to use the Blueprint (postgresql-ext-deployment)
 ```
 kubectl annotate deployment stock-demo-deploy kanister.kasten.io/blueprint='postgresql-ext-deployment' --namespace=stock-demo
 ```
-5. Use Kasten to backup and restore the application using a [Kasten Policy](postgres-ext-bp)
+5. Use Kasten to backup and restore the application using a Kasten Policy.
+
+## Basic tests
+### Backup app and database using Kasten policy and Kanister blueprint**
+
+### Delete data from PostgreSQL database**
+**Connect to PostgreSQL with user stock**
+```
+sudo -u stock psql
+```
+
+**Delete all from table**
+```
+DELETE FROM stock;
+```
+
+**Verify data on database**
+```
+SELECT * FROM stock;
+```
+
+You should see the table is empty.  If you connect to the app UI, you also should observe the stock is empty.
+
+### Restore the app data using Kasten
+
+### Verify the data is restored
+**Connect to PostgreSQL with user stock**
+```
+sudo -u stock psql
+```
+**Verify data on database**
+```
+SELECT * FROM stock;
+```
+
+You should see the table has all the data restored.  If you connect to the app UI, you also should observe the stock visible again.
