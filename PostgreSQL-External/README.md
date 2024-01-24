@@ -81,7 +81,9 @@ INSERT INTO stock(id,product,unit,amount,price) VALUES (5,'Veeam Backup for Sale
 ```
 
 **Verify data on database**
+```
 SELECT * FROM stock;
+```
 
 
 ## Deploy demo app
