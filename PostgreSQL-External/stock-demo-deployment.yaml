@@ -29,14 +29,14 @@ spec:
           env:
             - name: POSTGRES_DB
               valueFrom:
-                secretKeyRef:
+                configMapKeyRef:
                   key: db_name
-                  name: postgresql-secret
+                  name: postgresql-configmap
             - name: POSTGRES_SERVER
               valueFrom:
-                secretKeyRef:
+                configMapKeyRef:
                   key: host
-                  name: postgresql-secret
+                  name: postgresql-configmap
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
@@ -44,9 +44,9 @@ spec:
                   name: postgresql-secret
             - name: POSTGRES_PORT
               valueFrom:
-                secretKeyRef:
+                configMapKeyRef:
                   key: port
-                  name: postgresql-secret
+                  name: postgresql-configmap
             - name: ADMINKEY
               value: unlock
             - name: POSTGRES_PASSWORD

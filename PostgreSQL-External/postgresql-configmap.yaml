@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgresql-configmap
+  namespace: stock-demo
+data:
+  host: external-postgresql.stock-demo.svc.cluster.local
+  port: '5432'
+  db_name: stock #DB to be protected, only required for single database backup 

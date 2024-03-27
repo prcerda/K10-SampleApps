@@ -1,4 +1,5 @@
 kubectl apply -f stock-demo-namespace.yaml
+kubectl apply -f postgresql-configmap.yaml
 kubectl apply -f postgresql-secret.yaml
 kubectl apply -f postgresql-svc.yaml
 kubectl apply -f stock-demo-deployment.yaml
