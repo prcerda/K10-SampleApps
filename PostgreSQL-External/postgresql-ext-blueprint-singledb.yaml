@@ -19,7 +19,7 @@ actions:
           name: 'postgresql-secret'
           namespace: "{{ .Deployment.Namespace }}"
       args:
-        image: ghcr.io/kanisterio/postgres-kanister-tools:0.95.0
+        image: ghcr.io/kanisterio/postgres-kanister-tools:0.106.0
         namespace: '{{ .Deployment.Namespace }}'
         command:
         - bash
@@ -50,7 +50,7 @@ actions:
           name: 'postgresql-secret'
           namespace: "{{ .Deployment.Namespace }}"
       args:
-        image: ghcr.io/kanisterio/postgres-kanister-tools:0.95.0
+        image: ghcr.io/kanisterio/postgres-kanister-tools:0.106.0
         namespace: '{{ .Deployment.Namespace }}'
         command:
         - bash
@@ -77,7 +77,7 @@ actions:
     - func: KubeTask
       name: deleteDump
       args:
-        image: ghcr.io/kanisterio/postgres-kanister-tools:0.95.0
+        image: ghcr.io/kanisterio/postgres-kanister-tools:0.106.0
         namespace: "{{ .Namespace.Name }}"
         command:
           - bash
