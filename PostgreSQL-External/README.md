@@ -92,6 +92,7 @@ The demo app (stock) can be installed using the installapp.sh script provided he
 The demo app will use the following resources to connect with the external PostgreSQL database:
 1. A [service](postgresql-svc.yaml) of type **externalName** to connect with the external PostgreSQL instance using its FQDN.
 2. A [secret](postgresql-secret.yaml) containing the credentials to connect with the PostgreSQL instance, usually the one used by the kubernetes application to connect with the PostgreSQL database.  A sample secret YAML file has been included in this project, and the following data should be included:
+
 | Name                    | Type     | Default value         | Description                                                    |
 | ----------------------- | -------- | --------------------- | -------------------------------------------------------------- |
 | `username`              | String   | `stock`            | PostgreSQL user name                                              |
