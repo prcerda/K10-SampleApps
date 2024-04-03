@@ -92,11 +92,16 @@ The demo app (stock) can be installed using the installapp.sh script provided he
 The demo app will use the following resources to connect with the external PostgreSQL database:
 1. A [service](postgresql-svc.yaml) of type **externalName** to connect with the external PostgreSQL instance using its FQDN.
 2. A [secret](postgresql-secret.yaml) containing the credentials to connect with the PostgreSQL instance, usually the one used by the kubernetes application to connect with the PostgreSQL database.  A sample secret YAML file has been included in this project, and the following data should be included:
-
 | Name                    | Type     | Default value         | Description                                                    |
 | ----------------------- | -------- | --------------------- | -------------------------------------------------------------- |
 | `username`              | String   | `stock`            | PostgreSQL user name                                              |
 | `password`              | String   | `Veeam123!`           | PostgreSQL password                                               |
+
+
+3. A [configmap](postgresql-configmap.yaml) containing the data to connect to the database server
+
+| Name                    | Type     | Default value         | Description                                                    |
+| ----------------------- | -------- | --------------------- | -------------------------------------------------------------- |
 | `host `                 | String   | `external-postgresql.stock-demo.svc.cluster.local`   | FQDN for the Service of type externalName mentioned as a pre-requisite  |
 | `port`                  | String   | `5432`               | TCP port used by PostgreSQL instance                              |
 | `db_name`               | String   | `stock`           | DB to be protected, only required for single database backup   |
@@ -130,9 +135,9 @@ In order to use this blueprint:
 kubectl create -f postgresql-ext-blueprint-alldbs.yaml -n kasten-io
 ```
 
-4. Annotate the application (deployment) with the correct annotation to instruct K10 to use the Blueprint (postgresql-ext-deployment)
+4. Annotate the application ConfigMap with the correct annotation to instruct K10 to use the Blueprint (postgresql-ext-deployment)
 ```
-kubectl annotate deployment stock-demo-deploy kanister.kasten.io/blueprint='postgresql-ext-deployment' --namespace=stock-demo
+kubectl annotate configmap postgresql-configmap kanister.kasten.io/blueprint='postgresql-ext-deployment' --namespace=stock-demo
 ```
 5. Use Kasten to backup and restore the application using a Kasten Policy.
 

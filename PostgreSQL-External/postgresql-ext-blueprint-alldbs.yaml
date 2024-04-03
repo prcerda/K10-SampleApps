@@ -17,10 +17,10 @@ actions:
         pgSecret:
           kind: Secret
           name: 'postgresql-secret'
-          namespace: "{{ .Deployment.Namespace }}"
+          namespace: "{{ .Object.metadata.namespace }}"
       args:
         image: ghcr.io/kanisterio/postgres-kanister-tools:0.106.0
-        namespace: '{{ .Deployment.Namespace }}'
+        namespace: '{{ .Object.metadata.namespace }}'
         command:
         - bash
         - -o
@@ -29,10 +29,10 @@ actions:
         - pipefail
         - -c
         - |
-          export PGHOST='{{ index .Phases.pgDump.Secrets.pgSecret.Data "host" | toString }}'
+          export PGHOST='{{ index .Object.data "host" | toString }}'
           export PGUSER='{{ index .Phases.pgDump.Secrets.pgSecret.Data "username" | toString }}'
           export PGPASSWORD='{{ index .Phases.pgDump.Secrets.pgSecret.Data "password" | toString }}'
-          export PGPORT='{{ index .Phases.pgDump.Secrets.pgSecret.Data "port" | toString }}'        
+          export PGPORT='{{ index .Object.data "port" | toString }}'        
           backup_file_path="backup.sql"
           pg_dumpall --clean -U $PGUSER | kando location push --profile '{{ toJson .Profile }}' --path "${backup_file_path}" --output-name "kopiaOutput" -
   restore:
@@ -47,10 +47,10 @@ actions:
         pgSecret:
           kind: Secret
           name: 'postgresql-secret'
-          namespace: "{{ .Deployment.Namespace }}"
+          namespace: "{{ .Object.metadata.namespace }}"
       args:
         image: ghcr.io/kanisterio/postgres-kanister-tools:0.106.0
-        namespace: '{{ .Deployment.Namespace }}'
+        namespace: '{{ .Object.metadata.namespace }}'
         command:
         - bash
         - -o
@@ -59,10 +59,10 @@ actions:
         - pipefail
         - -c
         - |
-          export PGHOST='{{ index .Phases.pgRestore.Secrets.pgSecret.Data "host" | toString }}'
+          export PGHOST='{{ index .Object.data "host" | toString }}'
           export PGUSER='{{ index .Phases.pgRestore.Secrets.pgSecret.Data "username" | toString }}'
           export PGPASSWORD='{{ index .Phases.pgRestore.Secrets.pgSecret.Data "password" | toString }}'
-          export PGPORT='{{ index .Phases.pgRestore.Secrets.pgSecret.Data "port" | toString }}'  
+          export PGPORT='{{ index .Object.data "port" | toString }}'  
           backup_file_path="backup.sql"
           kopia_snap='{{ .ArtifactsIn.pgBackup.KopiaSnapshot }}'
           kando location pull --profile '{{ toJson .Profile }}' --path "${backup_file_path}" --kopia-snapshot "${kopia_snap}" - | psql -q -U "${PGUSER}"
